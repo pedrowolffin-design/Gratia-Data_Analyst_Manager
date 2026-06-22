@@ -1,0 +1,60 @@
+Fund_Name,Fund_ID,Bank,Account_Number,Currency,Balance_Local,Balance_USD,As_Of_Date,Account_Type
+Meridian Fund I,MF-001,JPMorgan Chase,****4821,USD,28450000,28450000,2026-04-30,Operating
+Meridian Fund I,MF-001,JPMorgan Chase,****4822,USD,5200000,5200000,2026-04-30,Reserve
+Meridian Fund I,MF-001,Barclays,****7103,GBP,3100000,3937000,2026-04-30,Operating
+Meridian Fund II,MF-002,Bank of America,****3356,USD,41200000,41200000,2026-04-30,Operating
+Meridian Fund II,MF-002,Bank of America,****3357,USD,8500000,8500000,2026-04-30,Reserve
+Meridian Fund II,MF-002,Bank of America,****3358,USD,12300000,12300000,2026-04-30,Distribution
+Meridian Fund II,MF-002,HSBC,****6290,EUR,6200000,6696000,2026-04-30,Operating
+Meridian Fund III,MF-003,Citibank,****5512,USD,19800000,19800000,2026-04-30,Operating
+Meridian Fund III,MF-003,Citibank,****5513,USD,3400000,3400000,2026-04-30,Reserve
+Meridian Fund III,MF-003,Citibank,****5514,USD,7650000,7650000,2026-04-30,Distribution
+Meridian Fund IV,MF-004,Goldman Sachs,****8841,USD,15600000,15600000,2026-04-30,Operating
+Meridian Fund IV,MF-004,Goldman Sachs,****8842,USD,4100000,4100000,2026-04-30,Reserve
+Meridian Fund IV,MF-004,Deutsche Bank,****2209,EUR,4500000,5040000,2026-04-30,Operating
+Meridian Fund IV,MF-004,Deutsche Bank,****2210,GBP,2800000,3556000,2026-04-30,Operating
+Meridian Fund V,MF-005,JPMorgan Chase,****1174,USD,52300000,52300000,2026-04-30,Operating
+Meridian Fund V,MF-005,JPMorgan Chase,****1175,USD,9800000,9800000,2026-04-30,Reserve
+Meridian Fund V,MF-005,JPMorgan Chase,****1176,USD,15400000,15400000,2026-04-30,Distribution
+Meridian Fund V,MF-005,BNP Paribas,****4488,EUR,8900000,9612000,2026-04-30,Operating
+Meridian Fund VI,MF-006,JPMorgan Chase,****7231,USD,22100000,22100000,2026-04-30,Operating
+Meridian Fund VI,MF-006,JPMorgan Chase,****7232,USD,1850000,1850000,2026-04-28,Reserve
+Meridian Fund VI,MF-006,Wells Fargo,****9905,USD,6700000,6700000,2026-04-30,Distribution
+Meridian Fund VII,MF-007,Bank of America,****2847,USD,11400000,11400000,2026-04-30,Operating
+Meridian Fund VII,MF-007,Bank of America,****2848,USD,2900000,2900000,2026-04-30,Reserve
+Meridian Fund VII,MF-007,Barclays,****3361,GBP,1950000,2476500,2026-04-30,Operating
+Meridian Fund VII,MF-007,Barclays,****3362,EUR,3200000,3456000,2026-04-30,Operating
+Meridian Fund VIII,MF-008,Citibank,****6693,USD,33700000,33700000,2026-04-30,Operating
+Meridian Fund VIII,MF-008,Citibank,****6694,USD,5600000,5600000,2026-04-30,Reserve
+Meridian Fund VIII,MF-008,Citibank,****6695,USD,9200000,9200000,2026-04-30,Distribution
+Meridian Fund VIII,MF-008,HSBC,****8817,GBP,4200000,5334000,2026-04-30,Operating
+Meridian Fund I,MF-001,JPMorgan Chase,****4823,USD,3100000,3100000,2026-04-30,Distribution
+Meridian Fund III,MF-003,Deutsche Bank,****5519,EUR,2100000,2268000,2026-04-30,Operating
+Meridian Fund IV,MF-004,Goldman Sachs,****8843,USD,6200000,6200000,2026-04-30,Distribution
+Meridian Fund V,MF-005,BNP Paribas,****4489,EUR,1200000,1296000,2026-04-30,Reserve
+Meridian Fund VI,MF-006,Wells Fargo,****9906,USD,3450000,3450000,2026-04-30,Operating
+Meridian Fund VII,MF-007,Bank of America,****2849,USD,4800000,4800000,2026-04-30,Distribution
+Meridian Fund VIII,MF-008,HSBC,****8818,EUR,2750000,2970000,2026-04-30,Operating
+Meridian Fund I,MF-001,Barclays,****7104,GBP,850000,1079500,2026-04-30,Reserve
+Meridian Fund II,MF-002,HSBC,****6291,EUR,1400000,1512000,2026-04-30,Reserve
+Meridian Fund III,MF-003,Citibank,****5515,USD,2200000,2200000,2026-04-30,Operating
+Meridian Fund IV,MF-004,Deutsche Bank,****2211,EUR,1800000,2016000,2026-04-30,Reserve
+Meridian Fund V,MF-005,JPMorgan Chase,****1177,USD,4300000,4300000,2026-04-30,Operating
+Meridian Fund VI,MF-006,JPMorgan Chase,****7233,USD,7800000,7800000,2026-04-30,Distribution
+Meridian Fund VII,MF-007,Barclays,****3363,GBP,600000,762000,2026-04-30,Reserve
+Meridian Fund VIII,MF-008,Citibank,****6696,USD,2800000,2800000,2026-04-30,Operating
+Meridian Fund I,MF-001,JPMorgan Chase,****4824,USD,1750000,1750000,2026-04-30,Operating
+Meridian Fund II,MF-002,Bank of America,****3359,USD,3600000,3600000,2026-04-30,Operating
+Meridian Fund III,MF-003,Deutsche Bank,****5520,EUR,950000,1026000,2026-04-30,Reserve
+Meridian Fund V,MF-005,BNP Paribas,****4490,EUR,2100000,2268000,2026-04-30,Operating
+Meridian Fund VI,MF-006,Wells Fargo,****9907,USD,2950000,2950000,2026-04-30,Reserve
+Meridian Fund VIII,MF-008,HSBC,****8819,GBP,1100000,1397000,2026-04-30,Operating
+Meridian Fund I,MF-001,Barclays,****7105,USD,2400000,2400000,2026-04-30,Operating
+Meridian Fund II,MF-002,HSBC,****6292,EUR,3300000,3564000,2026-04-30,Operating
+Meridian Fund III,MF-003,Citibank,****5516,USD,1500000,1500000,2026-04-30,Reserve
+Meridian Fund IV,MF-004,Goldman Sachs,****8844,USD,2700000,2700000,2026-04-30,Operating
+Meridian Fund VI,MF-006,JPMorgan Chase,****7234,USD,4200000,4200000,2026-04-30,Operating
+Meridian Fund VII,MF-007,Bank of America,****2850,USD,1600000,1600000,2026-04-30,Operating
+Meridian Fund VIII,MF-008,Citibank,****6697,USD,1950000,1950000,2026-04-30,Distribution
+Meridian Fund V,MF-005,JPMorgan Chase,****1178,USD,3200000,3200000,2026-04-30,Reserve
+Meridian Fund III,MF-003,Deutsche Bank,****5521,EUR,1750000,1890000,2026-04-30,Operating

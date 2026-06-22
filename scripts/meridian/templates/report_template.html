@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian April 2026 Treasury Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --purple:#6f18c9; --purple-2:#8a05be; --purple-3:#b45cff; --violet-ink:#2a073f;
+      --ink:#172033; --muted:#687084; --line:#e5dff0; --bg:#fbf8ff; --panel:#ffffff;
+      --cash:#5a18c9; --credit:#00a6a6; --blocking:#b42318; --high:#d45b13; --medium:#9a6b00; --good:#16784b;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color:var(--ink);
+      background:radial-gradient(circle at top right, rgba(180,92,255,.20), transparent 34rem), linear-gradient(180deg, #fbf8ff 0%, #f6f0ff 34%, #ffffff 100%);
+    }
+    header { color:#fff; background:linear-gradient(135deg, var(--violet-ink) 0%, var(--purple) 52%, var(--purple-2) 100%); padding:34px 32px 30px; box-shadow:0 18px 46px rgba(42,7,63,.22); }
+    main { padding:24px 32px 44px; max-width:1320px; margin:auto; }
+    h1 { margin:0; font-size:clamp(28px, 4vw, 48px); line-height:1.03; letter-spacing:0; }
+    h2 { margin:0; font-size:20px; letter-spacing:0; }
+    p { margin:0; }
+    .eyebrow { color:#dec2ff; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .hero { display:grid; grid-template-columns:minmax(0, 1.6fr) minmax(280px, .9fr); gap:24px; align-items:end; }
+    .hero-copy { display:grid; gap:12px; }
+    .hero-meta { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+    .pill { display:inline-flex; align-items:center; min-height:30px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.22); color:#fff; font-size:12px; font-weight:800; }
+    .status-panel { background:#fff; color:var(--ink); border-radius:8px; padding:16px; box-shadow:0 16px 36px rgba(31,8,53,.22); }
+    .status-label { color:var(--blocking); font-size:12px; font-weight:900; text-transform:uppercase; }
+    .status-title { margin-top:5px; font-size:20px; font-weight:900; }
+    .status-note { margin-top:8px; color:var(--muted); line-height:1.45; font-size:14px; }
+    .metrics { display:grid; grid-template-columns:repeat(5, minmax(150px,1fr)); gap:12px; margin-top:-34px; position:relative; }
+    .metric { background:var(--panel); border:1px solid rgba(111,24,201,.16); border-radius:8px; padding:17px 16px; box-shadow:0 12px 28px rgba(61,17,95,.10); min-height:112px; }
+    .metric span { display:block; color:var(--muted); font-size:12px; font-weight:800; text-transform:uppercase; margin-bottom:10px; }
+    .metric strong { display:block; font-size:clamp(21px, 2vw, 28px); line-height:1.05; }
+    .metric em { display:block; margin-top:8px; color:var(--muted); font-style:normal; font-size:12px; }
+    .grid { display:grid; gap:16px; margin-top:20px; }
+    .grid.two { grid-template-columns:minmax(0, 1.2fr) minmax(320px, .8fr); }
+    .grid.three { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    .panel { background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:8px; padding:18px; box-shadow:0 10px 26px rgba(61,17,95,.07); }
+    .panel-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:14px; }
+    .panel-subtitle { margin-top:5px; color:var(--muted); font-size:13px; line-height:1.35; }
+    .chart { min-height:220px; }
+    .chart svg { width:100%; height:auto; min-height:200px; display:block; overflow:visible; }
+    .bar-label { font-size:12px; fill:var(--ink); font-weight:800; }
+    .bar-value { font-size:11px; fill:var(--muted); }
+    .axis { stroke:#d8cce8; stroke-width:1; }
+    .legend { display:flex; gap:14px; flex-wrap:wrap; color:var(--muted); font-size:12px; font-weight:700; }
+    .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:-1px; }
+    .risk-list { display:grid; gap:10px; }
+    .risk-item { border:1px solid var(--line); border-left-width:5px; border-radius:8px; padding:11px 12px; background:#fff; }
+    .risk-item.Blocking { border-left-color:var(--blocking); } .risk-item.High { border-left-color:var(--high); } .risk-item.Medium { border-left-color:var(--medium); }
+    .risk-topline { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+    .risk-title { font-weight:900; font-size:14px; }
+    .risk-meta { color:var(--muted); font-size:12px; font-weight:800; white-space:nowrap; }
+    .risk-detail { margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35; }
+    .donut-wrap { display:grid; grid-template-columns:170px minmax(0,1fr); gap:16px; align-items:center; min-height:220px; }
+    .composition-list { display:grid; gap:9px; }
+    .composition-row { display:grid; grid-template-columns:96px minmax(0, 1fr) 76px; gap:10px; align-items:center; font-size:13px; }
+    .composition-row span { overflow:hidden; text-overflow:ellipsis; }
+    .mini-track { height:9px; background:#eee6f8; border-radius:999px; overflow:hidden; }
+    .mini-fill { height:100%; border-radius:999px; }
+    .controls { display:flex; gap:12px; flex-wrap:wrap; margin:0 0 14px; align-items:center; }
+    .filter-bar { position:sticky; top:0; z-index:40; display:flex; gap:14px 16px; flex-wrap:wrap; align-items:center; margin:0 0 4px; padding:12px 16px; background:rgba(255,255,255,.94); backdrop-filter:saturate(1.4) blur(6px); border:1px solid var(--line); border-radius:10px; box-shadow:0 8px 22px rgba(61,17,95,.08); }
+    .filter-bar-label { font-size:12px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:#5b2386; }
+    .filter-bar .clear-btn { margin-left:auto; padding:8px 14px; border:1px solid var(--line); border-radius:8px; background:#fff; color:#5b2386; font-weight:800; font-size:13px; cursor:pointer; }
+    .filter-bar .clear-btn:hover { background:#f3eaff; }
+    th.sortable { cursor:pointer; user-select:none; white-space:nowrap; }
+    th.sortable:hover { background:#ece0ff; }
+    th.sortable .arrow { opacity:.4; font-size:10px; margin-left:4px; }
+    th.sorted { color:#3d1170; } th.sorted .arrow { opacity:1; }
+    .empty-row td { color:var(--muted); font-style:italic; }
+    label { color:var(--muted); font-size:13px; font-weight:800; }
+    select { margin-left:6px; padding:8px 34px 8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); font-weight:700; }
+    .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:8px; background:#fff; }
+    table { width:100%; min-width:760px; border-collapse:collapse; }
+    th, td { padding:11px 12px; border-bottom:1px solid #eee8f7; text-align:left; vertical-align:top; font-size:13px; }
+    th { background:#f3eaff; color:#5b2386; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+    tbody tr:hover { background:#fcf8ff; }
+    .severity-pill { display:inline-flex; padding:4px 8px; border-radius:999px; color:#fff; font-size:12px; font-weight:900; }
+    .sev-Blocking { background:var(--blocking); } .sev-High { background:var(--high); } .sev-Medium { background:var(--medium); } .sev-Low { background:var(--good); }
+    .ltv-warning { fill:var(--high); } .ltv-ok { fill:var(--purple); }
+    .fineprint { color:var(--muted); font-size:12px; line-height:1.4; margin-top:8px; }
+    .chart-tooltip { position:fixed; z-index:50; pointer-events:none; opacity:0; visibility:hidden; transition:opacity .12s ease; max-width:260px; padding:9px 11px; background:#fff; color:var(--ink); border:1px solid var(--line); border-radius:8px; box-shadow:0 12px 30px rgba(31,8,53,.24); font-size:12px; line-height:1.5; }
+    .chart-tooltip.show { opacity:1; visibility:visible; }
+    .chart-tooltip strong { font-size:13px; }
+    [data-tip] { cursor:default; }
+    @media (max-width:1180px) { .grid.three { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+    @media (max-width:1080px) { .hero, .grid.two, .grid.three { grid-template-columns:1fr; } .metrics { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+    @media (max-width:700px) { header, main { padding-left:16px; padding-right:16px; } header { padding-top:26px; } .metrics { grid-template-columns:1fr; margin-top:16px; } .donut-wrap { grid-template-columns:1fr; } .composition-row { grid-template-columns:86px minmax(0,1fr); } .composition-row strong { grid-column:1 / -1; } .panel { padding:14px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow">CFO Treasury Review</div>
+        <h1>Meridian Capital Partners Treasury Report</h1>
+        <div class="hero-meta"><span class="pill">April 2026</span><span class="pill">8 active funds</span><span class="pill">Generated $generated_at</span></div>
+      </div>
+      <aside class="status-panel" aria-label="Submission status">
+        <div class="status-label">Draft / blocked</div>
+        <div class="status-title">Do not submit yet</div>
+        <p class="status-note">The consolidated package contains a stale 2026-04-28 cash row. Refresh it before sending the report downstream.</p>
+      </aside>
+    </div>
+  </header>
+  <main>
+    <section class="metrics">
+      <div class="metric"><span>Corrected Cash</span><strong>$corrected_cash</strong><em>Uses CFO-approved FX rates</em></div>
+      <div class="metric"><span>Available Credit</span><strong>$available_credit</strong><em>Across subscription facilities</em></div>
+      <div class="metric"><span>Total Liquidity</span><strong>$total_liquidity</strong><em>Cash plus available credit</em></div>
+      <div class="metric"><span>Open Findings</span><strong>$open_findings</strong><em>$blocking_count blocking / $high_count high</em></div>
+      <div class="metric"><span>Cash As-Of Dates</span><strong>$as_of_count</strong><em>$as_of_dates</em></div>
+    </section>
+
+    <section class="filter-bar" aria-label="Global table filters">
+      <span class="filter-bar-label">Filter tables</span>
+      <label>Fund <select id="globalFund"><option value="">All funds</option></select></label>
+      <label>Bank <select id="globalBank"><option value="">All banks</option></select></label>
+      <label>Account type <select id="globalAccountType"><option value="">All types</option></select></label>
+      <label>Lender <select id="globalLender"><option value="">All lenders</option></select></label>
+      <button type="button" class="clear-btn" id="clearFilters">Clear filters</button>
+    </section>
+
+    <section class="grid two">
+      <div class="panel"><div class="panel-head"><div><h2>Liquidity by Fund</h2><p class="panel-subtitle">Stacked view of corrected cash and available credit, ranked by total liquidity.</p></div><div class="legend"><span><i style="background:var(--cash)"></i>Cash</span><span><i style="background:var(--credit)"></i>Credit</span></div></div><div id="liquidityChart" class="chart"></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Priority Risks</h2><p class="panel-subtitle">Items the CFO should see before the detailed tables.</p></div></div><div id="riskList" class="risk-list"></div></div>
+    </section>
+
+    <section class="grid three">
+      <div class="panel"><div class="panel-head"><div><h2>LTV Headroom</h2><p class="panel-subtitle">MF-003 is closest to its covenant ceiling.</p></div></div><div id="ltvChart" class="chart"></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Finding Mix</h2><p class="panel-subtitle">Severity and category concentration.</p></div></div><div id="issueChart" class="chart"></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Cash Composition</h2><p class="panel-subtitle">Corrected cash by account type.</p></div></div><div id="compositionChart" class="chart"></div></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel"><div class="panel-head"><div><h2>Liquidity Detail</h2><p class="panel-subtitle">Fund-level liquidity. Responds to the Fund filter above. Click a column to sort.</p></div></div><div class="table-wrap"><table id="liquidity"></table></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Cash Accounts</h2><p class="panel-subtitle">Per-account balances. Responds to the Fund, Bank and Account type filters above. Click a column to sort.</p></div></div><div class="table-wrap"><table id="cashAccounts"></table></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Credit Facilities</h2><p class="panel-subtitle">Subscription facilities. Responds to the Fund and Lender filters above. Click a column to sort.</p></div></div><div class="table-wrap"><table id="creditFacilities"></table></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Findings Detail</h2><p class="panel-subtitle">Responds to the global Fund/Bank/Account&nbsp;type/Lender filters above, plus its own Severity control. Click a column to sort.</p></div></div><div class="controls"><label>Severity <select id="severityFilter"><option value="">All severities</option></select></label></div><div class="table-wrap"><table id="issues"></table></div></div>
+    </section>
+  </main>
+  <div id="chartTooltip" class="chart-tooltip" role="tooltip" aria-hidden="true"></div>
+  <script>
+    const data = $model_json;
+    const fmt = new Intl.NumberFormat('en-US', { style:'currency', currency:'USD', maximumFractionDigits:0 });
+    const shortFmt = new Intl.NumberFormat('en-US', { notation:'compact', compactDisplay:'short', maximumFractionDigits:1 });
+    const severityOrder = { Blocking:0, High:1, Medium:2, Low:3 };
+    const severityColor = { Blocking:'#b42318', High:'#d45b13', Medium:'#9a6b00', Low:'#16784b' };
+    const chartColors = ['#6f18c9', '#00a6a6', '#b45cff', '#f3a712', '#ef476f', '#16784b'];
+    const noChartData = '<p class="fineprint">No data matches the current filters.</p>';
+
+    function escapeText(value) { return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[char])); }
+    function compareValues(a, b, numeric) {
+      if (numeric) return (Number(a) || 0) - (Number(b) || 0);
+      return String(a ?? '').localeCompare(String(b ?? ''), undefined, { numeric:true, sensitivity:'base' });
+    }
+    function createSortableTable(id, columns, getRows) {
+      const table = document.getElementById(id);
+      let sortKey = null, sortDir = 1;
+      function draw() {
+        let rows = getRows();
+        if (sortKey) { const col = columns.find(c => c.key === sortKey); rows = [...rows].sort((a, b) => compareValues(a[sortKey], b[sortKey], col && col.numeric) * sortDir); }
+        const head = '<thead><tr>' + columns.map(c => { const active = c.key === sortKey; const arrow = active ? (sortDir === 1 ? '▲' : '▼') : '↕'; return `<th class="sortable${active ? ' sorted' : ''}" data-key="${escapeText(c.key)}">${escapeText(c.label)}<span class="arrow">${arrow}</span></th>`; }).join('') + '</tr></thead>';
+        const body = rows.length ? rows.map(row => '<tr>' + columns.map(c => `<td>${c.render ? c.render(row[c.key], row) : escapeText(row[c.key])}</td>`).join('') + '</tr>').join('') : `<tr class="empty-row"><td colspan="${columns.length}">No rows match the current filters.</td></tr>`;
+        table.innerHTML = head + '<tbody>' + body + '</tbody>';
+        table.querySelectorAll('th.sortable').forEach(th => th.addEventListener('click', () => { const key = th.getAttribute('data-key'); if (sortKey === key) sortDir = -sortDir; else { sortKey = key; sortDir = 1; } draw(); }));
+      }
+      return draw;
+    }
+    function groupedTotals(rows, keyField, valueField) { return Object.entries(rows.reduce((acc, row) => { const key = row[keyField] || 'Unassigned'; acc[key] = (acc[key] || 0) + Number(row[valueField] || 0); return acc; }, {})).map(([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value); }
+    function renderLiquidityChart() {
+      const funds = activeFundSet();
+      const rows = data.liquidity.filter(row => inFunds(funds, row.Fund_ID)).sort((a, b) => b.Total_Liquidity_USD - a.Total_Liquidity_USD);
+      if (!rows.length) { liquidityChart.innerHTML = noChartData; return; }
+      const max = Math.max(...rows.map(row => row.Total_Liquidity_USD));
+      const rowH = 38, width = 760, left = 92, right = 106, chartW = width - left - right, height = rows.length * rowH + 24;
+      const svgRows = rows.map((row, index) => { const y = 20 + index * rowH; const cashW = row.Corrected_Cash_USD / max * chartW; const creditW = row.Available_Credit_USD / max * chartW; const tip = `<strong>${escapeText(row.Fund_Name)}</strong> (${escapeText(row.Fund_ID)})<br>Corrected cash ${fmt.format(row.Corrected_Cash_USD)}<br>Available credit ${fmt.format(row.Available_Credit_USD)}<br>Total liquidity ${fmt.format(row.Total_Liquidity_USD)}`; return `<text x="0" y="${y + 16}" class="bar-label">${escapeText(row.Fund_ID)}</text><rect x="${left}" y="${y}" width="${chartW}" height="18" rx="4" fill="#eee6f8" data-tip="${tip}"></rect><rect x="${left}" y="${y}" width="${cashW}" height="18" rx="4" fill="var(--cash)" data-tip="${tip}"></rect><rect x="${left + cashW}" y="${y}" width="${creditW}" height="18" rx="4" fill="var(--credit)" data-tip="${tip}"></rect><text x="${left + chartW + 14}" y="${y + 14}" class="bar-value">${shortFmt.format(row.Total_Liquidity_USD)}</text>`; }).join('');
+      liquidityChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Stacked liquidity by fund">${svgRows}</svg>`;
+    }
+    function renderLtvChart() {
+      const funds = activeFundSet();
+      const rows = data.liquidity.filter(row => inFunds(funds, row.Fund_ID)).sort((a, b) => a.LTV_Headroom_Pct - b.LTV_Headroom_Pct);
+      if (!rows.length) { ltvChart.innerHTML = noChartData; return; }
+      const width = 360, rowH = 30, left = 58, chartW = 200, height = rows.length * rowH + 26;
+      const svgRows = rows.map((row, index) => { const y = 14 + index * rowH; const pctW = Number(row.Current_LTV_Pct) / Number(row.Covenant_LTV_Max_Pct) * chartW; const warningClass = row.LTV_Headroom_Pct <= 10 ? 'ltv-warning' : 'ltv-ok'; const tip = `<strong>${escapeText(row.Fund_Name)}</strong> (${escapeText(row.Fund_ID)})<br>Current LTV ${row.Current_LTV_Pct}%<br>Covenant max ${row.Covenant_LTV_Max_Pct}%<br>Headroom ${row.LTV_Headroom_Pct}%`; return `<text x="0" y="${y + 12}" class="bar-label">${escapeText(row.Fund_ID)}</text><rect x="${left}" y="${y}" width="${chartW}" height="16" rx="4" fill="#eee6f8" data-tip="${tip}"></rect><rect x="${left}" y="${y}" width="${pctW}" height="16" rx="4" class="${warningClass}" data-tip="${tip}"></rect><line x1="${left + chartW}" x2="${left + chartW}" y1="${y - 3}" y2="${y + 19}" class="axis"></line><text x="${left + chartW + 12}" y="${y + 12}" class="bar-value">${row.Current_LTV_Pct}% / ${row.Covenant_LTV_Max_Pct}%</text>`; }).join('');
+      ltvChart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="LTV against covenant maximum">${svgRows}</svg><p class="fineprint">Orange bars indicate 10 percentage points or less of covenant headroom.</p>`;
+    }
+    function renderIssueChart() {
+      const funds = activeFundSet();
+      const issues = data.issues.filter(row => inFunds(funds, row.Fund_ID));
+      if (!issues.length) { issueChart.innerHTML = noChartData; return; }
+      const severityCounts = issues.reduce((acc, row) => { acc[row.Severity] = (acc[row.Severity] || 0) + 1; return acc; }, {});
+      const categories = Object.entries(issues.reduce((acc, row) => { acc[row.Category] = (acc[row.Category] || 0) + 1; return acc; }, {})).sort((a, b) => b[1] - a[1]);
+      const max = Math.max(...Object.values(severityCounts), ...categories.map(([, value]) => value));
+      const severityHtml = Object.entries(severityCounts).sort(([a], [b]) => severityOrder[a] - severityOrder[b]).map(([key, value]) => `<div class="composition-row" data-tip="<strong>${escapeText(key)} severity</strong><br>${value} finding(s)"><span>${escapeText(key)}</span><div class="mini-track"><div class="mini-fill" style="width:${value / max * 100}%; background:${severityColor[key] || '#6f18c9'}"></div></div><strong>${value}</strong></div>`).join('');
+      const categoryHtml = categories.map(([key, value], index) => `<div class="composition-row" data-tip="<strong>${escapeText(key)}</strong><br>${value} finding(s)"><span>${escapeText(key)}</span><div class="mini-track"><div class="mini-fill" style="width:${value / max * 100}%; background:${chartColors[index % chartColors.length]}"></div></div><strong>${value}</strong></div>`).join('');
+      issueChart.innerHTML = `<div class="composition-list">${severityHtml}<hr style="width:100%; border:0; border-top:1px solid var(--line); margin:4px 0;">${categoryHtml}</div>`;
+    }
+    function renderCompositionChart() {
+      const funds = activeFundSet();
+      const rows = groupedTotals(data.account_type.filter(row => inFunds(funds, row.Fund_ID)), 'Account_Type', 'Corrected_Balance_USD'); const total = rows.reduce((sum, row) => sum + row.value, 0); let offset = 25;
+      if (!total) { compositionChart.innerHTML = noChartData; return; }
+      const segments = rows.map((row, index) => { const pct = row.value / total * 100; const tip = `<strong>${escapeText(row.key)}</strong><br>${fmt.format(row.value)}<br>${pct.toFixed(1)}% of cash`; const segment = `<circle r="58" cx="80" cy="80" pathLength="100" fill="none" pointer-events="stroke" stroke="${chartColors[index % chartColors.length]}" stroke-width="24" stroke-dasharray="${pct} ${100 - pct}" stroke-dashoffset="${offset}" transform="rotate(-90 80 80)" data-tip="${tip}"></circle>`; offset -= pct; return segment; }).join('');
+      const list = rows.map((row, index) => { const pct = row.value / total * 100; const tip = `<strong>${escapeText(row.key)}</strong><br>${fmt.format(row.value)}<br>${pct.toFixed(1)}% of cash`; return `<div class="composition-row" data-tip="${tip}"><span>${escapeText(row.key)}</span><div class="mini-track"><div class="mini-fill" style="width:${pct}%; background:${chartColors[index % chartColors.length]}"></div></div><strong>${fmt.format(row.value)}</strong></div>`; }).join('');
+      compositionChart.innerHTML = `<div class="donut-wrap"><svg viewBox="0 0 160 160" role="img" aria-label="Cash by account type"><circle r="58" cx="80" cy="80" pathLength="100" fill="transparent" stroke="#eee6f8" stroke-width="24"></circle>${segments}<text x="80" y="77" text-anchor="middle" class="bar-label">Cash</text><text x="80" y="96" text-anchor="middle" class="bar-value">${shortFmt.format(total)}</text></svg><div class="composition-list">${list}</div></div>`;
+    }
+    function renderRiskList() {
+      const preferred = ['Mixed cash as-of dates', 'MF-004 EUR balances use incorrect USD conversion', 'Wire above $5M completed with single approval', 'Pending facility draw requires covenant verification', 'MF-003 has limited LTV headroom'];
+      const reserve = data.issues.find(row => row.Category === 'Reserve Minimum'); const chosen = preferred.map(title => data.issues.find(row => row.Title === title)).filter(Boolean);
+      if (reserve) chosen.splice(2, 0, { ...reserve, Title:'Reserve shortfalls across funds', Description:`${data.issues.filter(row => row.Category === 'Reserve Minimum').length} reserve account(s) are below the $2M minimum. Largest shortfalls require top-up follow-through.` });
+      riskList.innerHTML = chosen.slice(0, 6).map(row => `<article class="risk-item ${escapeText(row.Severity)}"><div class="risk-topline"><div class="risk-title">${escapeText(row.Title)}</div><div class="risk-meta">${escapeText(row.Severity)} · ${escapeText(row.Fund_ID || row.Reference || 'Multiple')}</div></div><p class="risk-detail">${escapeText(row.Description)}</p></article>`).join('');
+    }
+    const liquidityColumns = [{key:'Fund_ID', label:'Fund'}, {key:'Fund_Name', label:'Name'}, {key:'Corrected_Cash_USD', label:'Corrected cash', numeric:true, render:v=>fmt.format(v)}, {key:'Available_Credit_USD', label:'Available credit', numeric:true, render:v=>fmt.format(v)}, {key:'Total_Liquidity_USD', label:'Total liquidity', numeric:true, render:v=>fmt.format(v)}, {key:'LTV_Headroom_Pct', label:'LTV headroom', numeric:true, render:v=>v === '' ? '' : `${v}%`}];
+    const cashColumns = [{key:'Fund_ID', label:'Fund'}, {key:'Bank', label:'Bank'}, {key:'Account_Type', label:'Account type'}, {key:'Currency', label:'Currency'}, {key:'Balance_Local', label:'Local balance', numeric:true, render:v=>Number(v).toLocaleString('en-US')}, {key:'Corrected_Balance_USD', label:'Corrected USD', numeric:true, render:v=>fmt.format(v)}];
+    const creditColumns = [{key:'Fund_ID', label:'Fund'}, {key:'Lender', label:'Lender'}, {key:'Facility_Size_USD', label:'Facility size', numeric:true, render:v=>fmt.format(v)}, {key:'Drawn_Amount_USD', label:'Drawn', numeric:true, render:v=>fmt.format(v)}, {key:'Available_USD', label:'Available', numeric:true, render:v=>fmt.format(v)}, {key:'Current_LTV_Pct', label:'Current LTV', numeric:true, render:v=>`${v}%`}, {key:'Covenant_LTV_Max_Pct', label:'Covenant max', numeric:true, render:v=>`${v}%`}, {key:'LTV_Headroom_Pct', label:'Headroom', numeric:true, render:v=>`${v}%`}];
+    const issueColumns = [{key:'Severity', label:'Severity', render:v=>`<span class="severity-pill sev-${escapeText(v)}">${escapeText(v)}</span>`}, {key:'Fund_ID', label:'Fund'}, {key:'Reference', label:'Reference'}, {key:'Title', label:'Finding'}, {key:'Recommendation', label:'Recommendation'}];
+
+    const globalFund = document.getElementById('globalFund'), globalBank = document.getElementById('globalBank'), globalAccountType = document.getElementById('globalAccountType'), globalLender = document.getElementById('globalLender');
+    // Each active global filter implies a set of Fund_IDs; the tables share the
+    // intersection so a Bank/Lender/Account-type pick cascades across all of them.
+    const fundsWith = (rows, key, value) => new Set(rows.filter(row => row[key] === value).map(row => row.Fund_ID));
+    function activeFundSet() {
+      let funds = null; // null === unconstrained
+      const limit = ids => { funds = funds === null ? ids : new Set([...funds].filter(id => ids.has(id))); };
+      if (globalFund.value) limit(new Set([globalFund.value]));
+      if (globalBank.value) limit(fundsWith(data.cash, 'Bank', globalBank.value));
+      if (globalAccountType.value) limit(fundsWith(data.cash, 'Account_Type', globalAccountType.value));
+      if (globalLender.value) limit(fundsWith(data.credit, 'Lender', globalLender.value));
+      return funds;
+    }
+    const inFunds = (funds, id) => funds === null || funds.has(id);
+    const renderLiquidity = createSortableTable('liquidity', liquidityColumns, () => { const funds = activeFundSet(); return data.liquidity.filter(row => inFunds(funds, row.Fund_ID)); });
+    const renderCash = createSortableTable('cashAccounts', cashColumns, () => { const funds = activeFundSet(); return data.cash.filter(row => inFunds(funds, row.Fund_ID) && (!globalBank.value || row.Bank === globalBank.value) && (!globalAccountType.value || row.Account_Type === globalAccountType.value)); });
+    const renderCredit = createSortableTable('creditFacilities', creditColumns, () => { const funds = activeFundSet(); return data.credit.filter(row => inFunds(funds, row.Fund_ID) && (!globalLender.value || row.Lender === globalLender.value)); });
+    const renderIssues = createSortableTable('issues', issueColumns, () => { const funds = activeFundSet(); const severity = severityFilter.value; return data.issues.filter(row => inFunds(funds, row.Fund_ID) && (!severity || row.Severity === severity)); });
+
+    function fillSelect(select, values) { for (const value of values) select.insertAdjacentHTML('beforeend', `<option value="${escapeText(value)}">${escapeText(value)}</option>`); }
+    const uniqueSorted = (rows, key) => [...new Set(rows.map(row => row[key]).filter(Boolean))].sort();
+    const fundIds = [...new Set([...data.cash, ...data.credit, ...data.liquidity].map(row => row.Fund_ID).filter(Boolean))].sort();
+    fillSelect(globalFund, fundIds);
+    fillSelect(globalBank, uniqueSorted(data.cash, 'Bank'));
+    fillSelect(globalAccountType, uniqueSorted(data.cash, 'Account_Type'));
+    fillSelect(globalLender, uniqueSorted(data.credit, 'Lender'));
+    for (const severity of ['Blocking', 'High', 'Medium', 'Low']) { if (data.issues.some(row => row.Severity === severity)) severityFilter.insertAdjacentHTML('beforeend', `<option value="${severity}">${severity}</option>`); }
+
+    // Re-render everything the global filters touch: the four charts and the four tables.
+    function renderFiltered() { renderLiquidityChart(); renderLtvChart(); renderIssueChart(); renderCompositionChart(); renderLiquidity(); renderCash(); renderCredit(); renderIssues(); }
+    for (const select of [globalFund, globalBank, globalAccountType, globalLender]) select.addEventListener('change', renderFiltered);
+    document.getElementById('clearFilters').addEventListener('click', () => { for (const s of [globalFund, globalBank, globalAccountType, globalLender]) s.value = ''; renderFiltered(); });
+    severityFilter.addEventListener('change', renderIssues);
+    const chartTooltip = document.getElementById('chartTooltip');
+    function positionTooltip(event) {
+      const pad = 14; const rect = chartTooltip.getBoundingClientRect();
+      let x = event.clientX + pad, y = event.clientY + pad;
+      if (x + rect.width > window.innerWidth - 8) x = event.clientX - rect.width - pad;
+      if (y + rect.height > window.innerHeight - 8) y = event.clientY - rect.height - pad;
+      chartTooltip.style.left = Math.max(8, x) + 'px'; chartTooltip.style.top = Math.max(8, y) + 'px';
+    }
+    function hideTooltip() { chartTooltip.classList.remove('show'); chartTooltip.setAttribute('aria-hidden', 'true'); }
+    function setupChartTooltips() {
+      for (const id of ['liquidityChart', 'ltvChart', 'issueChart', 'compositionChart']) {
+        const container = document.getElementById(id);
+        if (!container) continue;
+        container.addEventListener('mousemove', event => {
+          const target = event.target.closest('[data-tip]');
+          if (!target) { hideTooltip(); return; }
+          chartTooltip.innerHTML = target.getAttribute('data-tip');
+          chartTooltip.classList.add('show'); chartTooltip.setAttribute('aria-hidden', 'false');
+          positionTooltip(event);
+        });
+        container.addEventListener('mouseleave', hideTooltip);
+      }
+    }
+    renderRiskList();
+    renderFiltered();
+    setupChartTooltips();
+  </script>
+</body>
+</html>

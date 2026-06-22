@@ -1,0 +1,37 @@
+Date,From_Account,To_Account,Amount_USD,Currency,Purpose,Approved_By,Status,Reference
+2026-04-01,MF-001 ****4821,PortCo - Apex Holdings,3200000,USD,Portfolio company equity injection,J. Chen; R. Patel,Completed,WR-2026-0401
+2026-04-02,MF-002 ****3356,PortCo - Beacon Industries,1850000,USD,Working capital facility draw,S. Kim; M. Torres,Completed,WR-2026-0402
+2026-04-03,MF-005 ****1174,PortCo - Crestline Medical,4900000,USD,Acquisition co-invest funding,J. Chen; A. Novak,Completed,WR-2026-0403
+2026-04-04,MF-008 ****6693,Management fee account,2100000,USD,Q1 management fee payment,R. Patel; S. Kim,Completed,WR-2026-0404
+2026-04-05,MF-003 ****5512,PortCo - Delta Logistics,750000,USD,Board-approved capex funding,M. Torres,Completed,WR-2026-0405
+2026-04-07,MF-001 ****4821,MF-001 ****4822,1500000,USD,Reserve account top-up,J. Chen,Completed,WR-2026-0407
+2026-04-08,MF-006 ****7231,PortCo - Echo Technologies,2800000,USD,Series B follow-on investment,S. Kim; R. Patel,Completed,WR-2026-0408
+2026-04-09,MF-002 ****3358,LP Distribution Account,8200000,USD,Q1 distribution to LPs,J. Chen; A. Novak,Completed,WR-2026-0409
+2026-04-10,MF-007 ****2847,PortCo - Falcon Energy,1200000,USD,Operational bridge loan,M. Torres; S. Kim,Completed,WR-2026-0410
+2026-04-11,MF-004 ****8841,PortCo - Granite Manufacturing,3400000,USD,Equipment financing,R. Patel; J. Chen,Completed,WR-2026-0411
+2026-04-11,MF-008 ****6693,MF-008 ****6694,2000000,USD,Reserve account top-up,A. Novak; J. Chen,Completed,WR-2026-0411B
+2026-04-12,MF-005 ****1176,LP Distribution Account,6100000,USD,Partial realization proceeds,A. Novak; M. Torres,Completed,WR-2026-0412
+2026-04-14,MF-008 ****6693,PortCo - Horizon Retail,950000,USD,IT system upgrade funding,S. Kim,Completed,WR-2026-0414
+2026-04-14,MF-003 ****5512,MF-003 ****5513,1200000,USD,Reserve account top-up,S. Kim,Completed,WR-2026-0414B
+2026-04-15,MF-003 ****5512,PortCo - Iron Peak Mining,4200000,USD,Expansion capital,J. Chen; R. Patel,Completed,WR-2026-0415
+2026-04-16,MF-001 ****4821,Legal escrow - Apex acquisition,2600000,USD,Escrow deposit for add-on,M. Torres; A. Novak,Completed,WR-2026-0416
+2026-04-17,MF-006 ****7231,MF-006 ****9905,3500000,USD,Distribution account funding,R. Patel; S. Kim,Completed,WR-2026-0417
+2026-04-18,MF-003 Citibank Facility,MF-003 ****5512,8000000,USD,Subscription facility drawdown,J. Chen; A. Novak,Completed,WR-2026-0418
+2026-04-19,MF-002 ****3356,PortCo - Keystone Pharma,1650000,USD,Clinical trial funding,S. Kim; M. Torres,Completed,WR-2026-0419
+2026-04-20,MF-004 ****8841,MF-004 ****8842,800000,USD,Reserve account top-up,R. Patel,Completed,WR-2026-0420
+2026-04-21,MF-005 ****1174,PortCo - Lakeview Properties,3800000,USD,Real estate acquisition deposit,R. Patel; J. Chen,Completed,WR-2026-0421
+2026-04-22,MF-005 JPMorgan Facility,MF-005 ****1174,15000000,USD,Subscription facility drawdown,J. Chen; A. Novak; R. Patel,Completed,WR-2026-0422
+2026-04-23,MF-007 ****2847,PortCo - Meridian Solar,890000,USD,Project development cost,M. Torres; S. Kim,Completed,WR-2026-0423
+2026-04-24,MF-005 ****1174,PortCo - Nordic Shipping,7200000,USD,Vessel acquisition funding,M. Torres,Completed,WR-2026-0424
+2026-04-25,MF-008 Citibank Facility,MF-008 ****6693,10000000,USD,Subscription facility drawdown,A. Novak; J. Chen,Completed,WR-2026-0425
+2026-04-25,MF-004 ****8841,PortCo - Orion Defense,2200000,USD,Government contract working capital,R. Patel; S. Kim,Completed,WR-2026-0425B
+2026-04-26,MF-001 ****4821,PortCo - Pinnacle Health,1100000,USD,EMR implementation,J. Chen; M. Torres,Completed,WR-2026-0426
+2026-04-27,MF-006 ****9905,LP Distribution Account,4500000,USD,Semi-annual distribution,A. Novak; R. Patel,Completed,WR-2026-0427
+2026-04-28,MF-002 ****3356,PortCo - Quantum Analytics,3100000,USD,AI platform development,S. Kim; J. Chen,Completed,WR-2026-0428
+2026-04-28,MF-008 ****6693,PortCo - Redwood Timber,1750000,USD,Land acquisition,M. Torres; A. Novak,Completed,WR-2026-0428B
+2026-04-29,MF-003 Citibank Facility,MF-003 ****5512,12000000,USD,Capital call - drawdown on subscription facility,J. Chen; R. Patel,Pending,WR-2026-0429
+2026-04-29,MF-007 ****2847,PortCo - Summit Logistics,1400000,USD,Fleet expansion,S. Kim; M. Torres,Completed,WR-2026-0429B
+2026-04-30,MF-001 ****4823,LP Distribution Account,3100000,USD,Q1 final distribution,A. Novak; R. Patel,Completed,WR-2026-0430
+2026-04-30,MF-004 ****8843,LP Distribution Account,2800000,USD,Partial exit proceeds,J. Chen; S. Kim,Completed,WR-2026-0430B
+2026-04-30,MF-006 ****7231,PortCo - Titan Aerospace,4800000,USD,R&D milestone payment,R. Patel; A. Novak,Completed,WR-2026-0430C
+2026-04-30,MF-002 ****3356,Management fee account,1900000,USD,Q1 management fee payment,M. Torres; J. Chen,Completed,WR-2026-0430D

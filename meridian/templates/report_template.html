@@ -31,7 +31,7 @@
     .status-label { color:var(--blocking); font-size:12px; font-weight:900; text-transform:uppercase; }
     .status-title { margin-top:5px; font-size:20px; font-weight:900; }
     .status-note { margin-top:8px; color:var(--muted); line-height:1.45; font-size:14px; }
-    .metrics { display:grid; grid-template-columns:repeat(5, minmax(150px,1fr)); gap:12px; margin-top:-34px; position:relative; }
+    .metrics { display:grid; grid-template-columns:repeat(6, minmax(140px,1fr)); gap:12px; margin-top:-34px; position:relative; }
     .metric { background:var(--panel); border:1px solid rgba(111,24,201,.16); border-radius:8px; padding:17px 16px; box-shadow:0 12px 28px rgba(61,17,95,.10); min-height:112px; }
     .metric span { display:block; color:var(--muted); font-size:12px; font-weight:800; text-transform:uppercase; margin-bottom:10px; }
     .metric strong { display:block; font-size:clamp(21px, 2vw, 28px); line-height:1.05; }
@@ -109,7 +109,8 @@
   </header>
   <main>
     <section class="metrics">
-      <div class="metric"><span>Corrected Cash</span><strong>$corrected_cash</strong><em>Uses CFO-approved FX rates</em></div>
+      <div class="metric"><span>Reported Cash</span><strong>$reported_cash</strong><em>As stated in source files (uncorrected)</em></div>
+      <div class="metric"><span>Corrected Cash</span><strong>$corrected_cash</strong><em>CFO-approved FX rates · $cash_correction vs reported</em></div>
       <div class="metric"><span>Available Credit</span><strong>$available_credit</strong><em>Across subscription facilities</em></div>
       <div class="metric"><span>Total Liquidity</span><strong>$total_liquidity</strong><em>Cash plus available credit</em></div>
       <div class="metric"><span>Open Findings</span><strong>$open_findings</strong><em>$blocking_count blocking / $high_count high</em></div>

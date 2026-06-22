@@ -17,6 +17,7 @@ def main() -> int:
     totals = model["validation"]["totals"]
     print(f"Generated Meridian {model['period']['label']} treasury deliverables")
     print(f"Output directory: {output_dir}")
+    print(f"Reported cash: {money(totals['reported_cash_usd'])}")
     print(f"Corrected cash: {money(totals['corrected_cash_usd'])}")
     print(f"Available credit: {money(totals['available_credit_usd'])}")
     print(f"Total liquidity: {money(totals['total_liquidity_usd'])}")

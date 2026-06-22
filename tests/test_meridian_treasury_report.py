@@ -73,6 +73,15 @@ class MeridianTreasuryReportTests(unittest.TestCase):
             totals["total_liquidity_usd"],
         )
 
+    def test_reported_cash_and_correction_delta(self):
+        totals = self.model["validation"]["totals"]
+        reported = sum(row["Reported_Balance_USD"] for row in self.model["cash"])
+        self.assertEqual(totals["reported_cash_usd"], round(reported, 2))
+        self.assertEqual(
+            totals["cash_correction_usd"],
+            round(totals["corrected_cash_usd"] - totals["reported_cash_usd"], 2),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

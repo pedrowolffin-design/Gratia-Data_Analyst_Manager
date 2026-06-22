@@ -18,6 +18,12 @@ from ..formatting import money
 TEMPLATE_PATH = Path(__file__).resolve().parent.parent / "templates" / "report_template.html"
 
 
+def _signed_money(value: float) -> str:
+    """Money with an explicit +/- sign, for the correction delta."""
+    sign = "+" if value >= 0 else "-"
+    return f"{sign}{money(abs(value))}"
+
+
 def _status_panel(validation: dict[str, Any]) -> dict[str, str]:
     """Header status-panel copy derived from the run's submission gate."""
     if validation["submission_status"].upper().startswith("BLOCKED"):
@@ -63,6 +69,8 @@ def write_html(path: Path, model: dict[str, Any]) -> None:
         generated_at=html.escape(validation["generated_at"]),
         as_of_dates=html.escape(", ".join(validation["as_of_dates_found"])),
         as_of_count=len(validation["as_of_dates_found"]),
+        reported_cash=html.escape(money(totals["reported_cash_usd"])),
+        cash_correction=html.escape(_signed_money(totals["cash_correction_usd"])),
         corrected_cash=html.escape(money(totals["corrected_cash_usd"])),
         available_credit=html.escape(money(totals["available_credit_usd"])),
         total_liquidity=html.escape(money(totals["total_liquidity_usd"])),

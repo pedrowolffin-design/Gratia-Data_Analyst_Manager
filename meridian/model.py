@@ -111,6 +111,7 @@ def build_validation_summary(
     for item in issues:
         severities[item["Severity"]] += 1
     corrected_cash = round(sum(row["Corrected_Balance_USD"] for row in cash_rows), 2)
+    reported_cash = round(sum(row["Reported_Balance_USD"] for row in cash_rows), 2)
     available_credit = round(sum(row["Available_USD"] for row in credit_rows), 2)
     total_liquidity = round(sum(row["Total_Liquidity_USD"] for row in liquidity), 2)
     expected_as_of_date = period.expected_as_of_date
@@ -141,7 +142,9 @@ def build_validation_summary(
         },
         "issue_counts_by_severity": dict(sorted(severities.items())),
         "totals": {
+            "reported_cash_usd": reported_cash,
             "corrected_cash_usd": corrected_cash,
+            "cash_correction_usd": round(corrected_cash - reported_cash, 2),
             "available_credit_usd": available_credit,
             "total_liquidity_usd": total_liquidity,
         },

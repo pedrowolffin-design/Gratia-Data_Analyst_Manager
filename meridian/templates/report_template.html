@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Meridian April 2026 Treasury Report</title>
+  <title>Meridian $period_label Treasury Report</title>
   <style>
     :root {
       color-scheme: light;
@@ -98,12 +98,12 @@
       <div class="hero-copy">
         <div class="eyebrow">CFO Treasury Review</div>
         <h1>Meridian Capital Partners Treasury Report</h1>
-        <div class="hero-meta"><span class="pill">April 2026</span><span class="pill">8 active funds</span><span class="pill">Generated $generated_at</span></div>
+        <div class="hero-meta"><span class="pill">$period_label</span><span class="pill">$fund_count active funds</span><span class="pill">Generated $generated_at</span></div>
       </div>
       <aside class="status-panel" aria-label="Submission status">
-        <div class="status-label">Draft / blocked</div>
-        <div class="status-title">Do not submit yet</div>
-        <p class="status-note">The consolidated package contains a stale 2026-04-28 cash row. Refresh it before sending the report downstream.</p>
+        <div class="status-label">$status_label</div>
+        <div class="status-title">$status_title</div>
+        <p class="status-note">$status_note</p>
       </aside>
     </div>
   </header>
@@ -131,7 +131,7 @@
     </section>
 
     <section class="grid three">
-      <div class="panel"><div class="panel-head"><div><h2>LTV Headroom</h2><p class="panel-subtitle">MF-003 is closest to its covenant ceiling.</p></div></div><div id="ltvChart" class="chart"></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>LTV Headroom</h2><p class="panel-subtitle">Funds ranked by remaining headroom to their covenant ceiling.</p></div></div><div id="ltvChart" class="chart"></div></div>
       <div class="panel"><div class="panel-head"><div><h2>Finding Mix</h2><p class="panel-subtitle">Severity and category concentration.</p></div></div><div id="issueChart" class="chart"></div></div>
       <div class="panel"><div class="panel-head"><div><h2>Cash Composition</h2><p class="panel-subtitle">Corrected cash by account type.</p></div></div><div id="compositionChart" class="chart"></div></div>
     </section>

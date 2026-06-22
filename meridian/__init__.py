@@ -1,7 +1,10 @@
-"""Meridian April 2026 treasury reporting pipeline (standard library only).
+"""Meridian treasury reporting pipeline (standard library only).
 
-Public API re-exported here is the stable contract consumed by the entry script
-``scripts/build_meridian_treasury_report.py`` and the test suite.
+The reporting period is derived per run from the input filenames (see
+:mod:`meridian.period`), so the same code reproduces a report for any month.
+
+Public API re-exported here is the stable contract consumed by the ``python -m
+meridian`` entry point and the test suite.
 """
 
 from __future__ import annotations

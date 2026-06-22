@@ -15,7 +15,7 @@ def main() -> int:
     write_outputs(model, output_dir)
 
     totals = model["validation"]["totals"]
-    print("Generated Meridian April 2026 treasury deliverables")
+    print(f"Generated Meridian {model['period']['label']} treasury deliverables")
     print(f"Output directory: {output_dir}")
     print(f"Corrected cash: {money(totals['corrected_cash_usd'])}")
     print(f"Available credit: {money(totals['available_credit_usd'])}")

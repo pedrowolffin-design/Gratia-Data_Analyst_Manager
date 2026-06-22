@@ -71,9 +71,8 @@ AI_DISCLOSURE = (
 
 def build_memo_markdown(model: dict[str, Any]) -> str:
     issues = model["issues"]
-    totals = model["validation"]["totals"]
     lines: list[str] = []
-    lines += _summary(issues, totals)
+    lines += _summary(issues, model["validation"])
     lines += _topics(issues)
     lines += _next_steps(issues)
     lines += ["## A note on how I used AI", "", AI_DISCLOSURE, ""]
@@ -87,31 +86,57 @@ def _counts(issues: list[dict[str, Any]]) -> dict[str, int]:
     return counts
 
 
-def _summary(issues: list[dict[str, Any]], totals: dict[str, Any]) -> list[str]:
+def _summary(issues: list[dict[str, Any]], validation: dict[str, Any]) -> list[str]:
     counts = _counts(issues)
     blocking = counts.get("Blocking", 0)
     high = counts.get("High", 0)
-    return [
-        "# Meridian Capital Partners — April 2026 Treasury Findings Memo",
-        "",
-        "**Status:** Draft only — please hold this before it goes downstream. "
-        "There's a blocking data-quality issue that has to be cleared first.",
-        "",
-        "## The short version",
-        "",
-        (
-            f"Honestly, the numbers underneath look solid: about {money(totals['corrected_cash_usd'])} "
-            f"in corrected cash, {money(totals['available_credit_usd'])} of available credit, and "
-            f"{money(totals['total_liquidity_usd'])} of total liquidity across the eight funds. But I "
-            f"can't recommend sending this out yet. The cash file mixes two as-of dates, and per the "
-            f"README a consolidated report with mixed dates simply shouldn't be submitted."
-        ),
-        "",
-        (
+    totals = validation["totals"]
+    period_label = validation["reporting_period"]
+    fund_count = validation["fund_count"]
+
+    headline = (
+        f"about {money(totals['corrected_cash_usd'])} in corrected cash, "
+        f"{money(totals['available_credit_usd'])} of available credit, and "
+        f"{money(totals['total_liquidity_usd'])} of total liquidity across the {fund_count} funds"
+    )
+    if blocking:
+        status_line = (
+            "**Status:** Draft only — please hold this before it goes downstream. "
+            "There's a blocking data-quality issue that has to be cleared first."
+        )
+        short_version = (
+            f"Honestly, the numbers underneath look solid: {headline}. But I can't recommend sending "
+            f"this out yet. The cash file mixes as-of dates, and per the README a consolidated report "
+            f"with mixed dates simply shouldn't be submitted."
+        )
+        followup = (
             f"Underneath that blocker I flagged {blocking + high} item(s) at Blocking or High severity. "
             f"None of them are catastrophic, but a few I'd want closed before we put our name on the "
             f"package. I've grouped everything by topic below, worst-first."
-        ),
+        )
+    else:
+        status_line = (
+            "**Status:** Cleared for review — no blocking issues. Please still give the figures a "
+            "second look before this goes downstream."
+        )
+        short_version = (
+            f"The numbers look solid: {headline}, and every balance ties to the same as-of date, so "
+            f"there's no blocker holding the package back."
+        )
+        followup = (
+            f"I flagged {blocking + high} item(s) at Blocking or High severity. I've grouped everything "
+            f"by topic below, worst-first, so the higher-severity items are easy to act on."
+        )
+    return [
+        f"# Meridian Capital Partners — {period_label} Treasury Findings Memo",
+        "",
+        status_line,
+        "",
+        "## The short version",
+        "",
+        short_version,
+        "",
+        followup,
         "",
     ]
 

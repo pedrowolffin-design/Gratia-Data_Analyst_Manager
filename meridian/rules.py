@@ -12,7 +12,7 @@ from typing import Any
 
 from .config import (
     DUAL_APPROVAL_THRESHOLD_USD,
-    EXPECTED_AS_OF_DATE,
+    FX_RATES,
     RESERVE_MINIMUM_USD,
 )
 from .formatting import money, pct
@@ -44,9 +44,10 @@ def build_issues(
     cash_rows: list[dict[str, Any]],
     credit_rows: list[dict[str, Any]],
     wire_rows: list[dict[str, Any]],
+    expected_as_of_date: str,
 ) -> list[Issue]:
     issues: list[Issue] = []
-    issues.extend(_data_quality_issues(cash_rows))
+    issues.extend(_data_quality_issues(cash_rows, expected_as_of_date))
     issues.extend(_fx_issues(cash_rows))
     issues.extend(_reserve_issues(cash_rows))
     issues.extend(_wire_issues(wire_rows, credit_rows))
@@ -54,11 +55,13 @@ def build_issues(
     return issues
 
 
-def _data_quality_issues(cash_rows: list[dict[str, Any]]) -> list[Issue]:
+def _data_quality_issues(
+    cash_rows: list[dict[str, Any]], expected_as_of_date: str
+) -> list[Issue]:
     dates = sorted({row["As_Of_Date"] for row in cash_rows})
-    if dates == [EXPECTED_AS_OF_DATE]:
+    if dates == [expected_as_of_date]:
         return []
-    stale_rows = [row for row in cash_rows if row["As_Of_Date"] != EXPECTED_AS_OF_DATE]
+    stale_rows = [row for row in cash_rows if row["As_Of_Date"] != expected_as_of_date]
     return [
         Issue(
             Severity="Blocking",
@@ -66,7 +69,7 @@ def _data_quality_issues(cash_rows: list[dict[str, Any]]) -> list[Issue]:
             Title="Mixed cash as-of dates",
             Description=(
                 f"Cash positions include dates {', '.join(dates)}; "
-                f"{len(stale_rows)} row(s) are not {EXPECTED_AS_OF_DATE}."
+                f"{len(stale_rows)} row(s) are not {expected_as_of_date}."
             ),
             Why_It_Matters="The README states consolidated reports with mixed dates must not be submitted.",
             Recommendation="Refresh the stale cash balance(s), document the gap, and update the CFO with an expected resolution timeline.",
@@ -81,18 +84,22 @@ def _fx_issues(cash_rows: list[dict[str, Any]]) -> list[Issue]:
     if not fx_mismatches:
         return []
     total_overstatement = sum(row["USD_Variance"] for row in fx_mismatches)
+    fund_ids = sorted({row["Fund_ID"] for row in fx_mismatches})
+    currencies = sorted({row["Currency"] for row in fx_mismatches})
+    funds_label = ", ".join(fund_ids)
+    rate_label = ", ".join(f"{FX_RATES[code]} {code}/USD" for code in currencies)
     return [
         Issue(
             Severity="High",
             Category="FX Conversion",
-            Title="MF-004 EUR balances use incorrect USD conversion",
+            Title=f"{funds_label} balances use incorrect USD conversion",
             Description=(
-                f"{len(fx_mismatches)} EUR row(s) are overstated by {money(total_overstatement)} "
-                "versus the CFO-approved 1.08 EUR/USD rate."
+                f"{len(fx_mismatches)} {'/'.join(currencies)} row(s) are overstated by "
+                f"{money(total_overstatement)} versus the CFO-approved rate(s) ({rate_label})."
             ),
             Why_It_Matters="Using non-approved FX corrupts consolidated USD cash and liquidity reporting.",
             Recommendation="Recalculate USD balances from local currency using the fixed README rates and confirm source-system FX mapping.",
-            Fund_ID="MF-004",
+            Fund_ID=fund_ids[0],
             Reference="Cash",
         )
     ]

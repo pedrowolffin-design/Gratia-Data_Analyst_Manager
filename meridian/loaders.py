@@ -6,9 +6,11 @@ import csv
 from pathlib import Path
 from typing import Any
 
+from .period import resolve_period
+
 
 def project_root() -> Path:
-    return Path(__file__).resolve().parents[2]
+    return Path(__file__).resolve().parents[1]
 
 
 def data_dir(root: Path) -> Path:
@@ -16,10 +18,10 @@ def data_dir(root: Path) -> Path:
     return candidate if candidate.exists() else root
 
 
-def find_input_file(base: Path, suffix: str) -> Path:
-    matches = sorted(base.glob(f"*{suffix}"))
+def find_input_file(base: Path, pattern: str) -> Path:
+    matches = sorted(base.glob(f"*{pattern}"))
     if not matches:
-        raise FileNotFoundError(f"Could not find input matching *{suffix} in {base}")
+        raise FileNotFoundError(f"Could not find input matching *{pattern} in {base}")
     return matches[0]
 
 
@@ -34,11 +36,16 @@ def load_inputs(root: Path | None = None) -> dict[str, Any]:
     paths = {
         "cash": find_input_file(base, "Fund Cash Positions.csv"),
         "credit": find_input_file(base, "Credit Facility Summary.csv"),
-        "wire": find_input_file(base, "Wire Transfer Log (April 2026).csv"),
+        # Match any month's wire log (e.g. "Wire Transfer Log (April 2026).csv");
+        # the reporting period is derived from this filename.
+        "wire": find_input_file(base, "Wire Transfer Log*.csv"),
     }
+    cash = read_csv(paths["cash"])
+    period = resolve_period(paths["wire"].name, [row.get("As_Of_Date", "") for row in cash])
     return {
         "paths": {key: str(value) for key, value in paths.items()},
-        "cash": read_csv(paths["cash"]),
+        "period": period,
+        "cash": cash,
         "credit": read_csv(paths["credit"]),
         "wire": read_csv(paths["wire"]),
     }

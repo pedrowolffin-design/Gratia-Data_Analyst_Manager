@@ -13,10 +13,18 @@ from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape
 
-WARNING = "DRAFT / BLOCKED: do not submit until the 2026-04-28 stale cash row is refreshed."
-
 # Style index (into styles.xml cellXfs) applied to LTV fraction cells.
 PERCENT_STYLE = 1
+
+
+def submission_banner(validation: dict[str, Any]) -> str:
+    """A one-line status banner derived from the run's validation results."""
+    if validation["submission_status"].upper().startswith("BLOCKED"):
+        stale = ", ".join(validation.get("stale_as_of_dates") or [])
+        if stale:
+            return f"DRAFT / BLOCKED: do not submit until the stale cash row(s) dated {stale} are refreshed."
+        return f"DRAFT / BLOCKED: {validation.get('blocking_reason') or 'resolve blocking findings before submission.'}"
+    return "Cleared for review — verify figures against source before distribution."
 
 
 class Percent(float):
@@ -127,24 +135,25 @@ DATA_SHEETS: list[tuple[str, list[str], str]] = [
 
 
 def build_workbook_sheets(model: dict[str, Any]) -> dict[str, list[list[Any]]]:
-    sheets: dict[str, list[list[Any]]] = {"Executive Summary": _executive_summary_sheet(model)}
+    banner = submission_banner(model["validation"])
+    sheets: dict[str, list[list[Any]]] = {"Executive Summary": _executive_summary_sheet(model, banner)}
     for title, columns, model_key in DATA_SHEETS:
-        sheets[title] = _data_sheet(columns, model[model_key])
+        sheets[title] = _data_sheet(columns, model[model_key], banner)
     return sheets
 
 
-def _data_sheet(columns: list[str], rows: list[dict[str, Any]]) -> list[list[Any]]:
-    sheet: list[list[Any]] = [[WARNING], [], list(columns)]
+def _data_sheet(columns: list[str], rows: list[dict[str, Any]], banner: str) -> list[list[Any]]:
+    sheet: list[list[Any]] = [[banner], [], list(columns)]
     for row in rows:
         sheet.append([_cell(key, row.get(key, "")) for key in columns])
     return sheet
 
 
-def _executive_summary_sheet(model: dict[str, Any]) -> list[list[Any]]:
+def _executive_summary_sheet(model: dict[str, Any], banner: str) -> list[list[Any]]:
     totals = model["validation"]["totals"]
     sheet: list[list[Any]] = [
-        ["Meridian Capital Partners - April 2026 Treasury Report"],
-        [WARNING],
+        [f"Meridian Capital Partners - {model['period']['label']} Treasury Report"],
+        [banner],
         [],
         ["Metric", "Amount USD"],
         ["Corrected Cash", totals["corrected_cash_usd"]],

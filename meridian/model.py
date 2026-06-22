@@ -12,8 +12,9 @@ from collections import defaultdict
 from datetime import UTC, datetime
 from typing import Any
 
-from .config import EXPECTED_AS_OF_DATE, FX_RATES
+from .config import FX_RATES
 from .normalize import normalize_cash, normalize_credit, normalize_wires
+from .period import ReportingPeriod, resolve_period
 from .rules import build_issues
 
 
@@ -21,12 +22,23 @@ def build_model(inputs: dict[str, Any]) -> dict[str, Any]:
     cash_rows = normalize_cash(inputs["cash"])
     credit_rows = normalize_credit(inputs["credit"])
     wire_rows = normalize_wires(inputs["wire"])
-    issues = [issue.to_dict() for issue in build_issues(cash_rows, credit_rows, wire_rows)]
+    period = _resolve_period(inputs, cash_rows)
+    issues = [
+        issue.to_dict()
+        for issue in build_issues(cash_rows, credit_rows, wire_rows, period.expected_as_of_date)
+    ]
     liquidity = build_liquidity_summary(cash_rows, credit_rows)
     currency = aggregate(cash_rows, ["Fund_ID", "Fund_Name", "Currency"], "Corrected_Balance_USD")
     account_type = aggregate(cash_rows, ["Fund_ID", "Fund_Name", "Account_Type"], "Corrected_Balance_USD")
-    validation = build_validation_summary(cash_rows, credit_rows, wire_rows, issues, liquidity)
+    validation = build_validation_summary(cash_rows, credit_rows, wire_rows, issues, liquidity, period)
     return {
+        "period": {
+            "label": period.label,
+            "slug": period.slug,
+            "expected_as_of_date": period.expected_as_of_date,
+            "year": period.year,
+            "month": period.month,
+        },
         "cash": cash_rows,
         "credit": credit_rows,
         "wire": wire_rows,
@@ -36,6 +48,15 @@ def build_model(inputs: dict[str, Any]) -> dict[str, Any]:
         "account_type": account_type,
         "validation": validation,
     }
+
+
+def _resolve_period(inputs: dict[str, Any], cash_rows: list[dict[str, Any]]) -> ReportingPeriod:
+    """Use the period resolved at load time, or derive one if absent."""
+    period = inputs.get("period")
+    if isinstance(period, ReportingPeriod):
+        return period
+    wire_name = inputs.get("paths", {}).get("wire", "")
+    return resolve_period(wire_name, [row.get("As_Of_Date", "") for row in cash_rows])
 
 
 def build_liquidity_summary(
@@ -84,6 +105,7 @@ def build_validation_summary(
     wire_rows: list[dict[str, Any]],
     issues: list[dict[str, Any]],
     liquidity: list[dict[str, Any]],
+    period: ReportingPeriod,
 ) -> dict[str, Any]:
     severities: dict[str, int] = defaultdict(int)
     for item in issues:
@@ -91,12 +113,26 @@ def build_validation_summary(
     corrected_cash = round(sum(row["Corrected_Balance_USD"] for row in cash_rows), 2)
     available_credit = round(sum(row["Available_USD"] for row in credit_rows), 2)
     total_liquidity = round(sum(row["Total_Liquidity_USD"] for row in liquidity), 2)
+    expected_as_of_date = period.expected_as_of_date
+    as_of_dates = sorted({row["As_Of_Date"] for row in cash_rows})
+    stale_as_of_dates = [date for date in as_of_dates if date != expected_as_of_date]
+    # Blocking findings drive the submission gate, so the status reflects the
+    # data rather than a fixed assumption about this month.
+    blocking_titles = list(dict.fromkeys(item["Title"] for item in issues if item["Severity"] == "Blocking"))
+    if blocking_titles:
+        submission_status = "BLOCKED - draft only"
+        blocking_reason = f"{'; '.join(blocking_titles)} must be resolved before submission."
+    else:
+        submission_status = "Cleared for review"
+        blocking_reason = ""
     return {
-        "reporting_period": "April 2026",
-        "expected_as_of_date": EXPECTED_AS_OF_DATE,
-        "as_of_dates_found": sorted({row["As_Of_Date"] for row in cash_rows}),
-        "submission_status": "BLOCKED - draft only",
-        "blocking_reason": "Mixed cash as-of dates must be resolved before submission.",
+        "reporting_period": period.label,
+        "expected_as_of_date": expected_as_of_date,
+        "as_of_dates_found": as_of_dates,
+        "stale_as_of_dates": stale_as_of_dates,
+        "fund_count": len({row["Fund_ID"] for row in cash_rows}),
+        "submission_status": submission_status,
+        "blocking_reason": blocking_reason,
         "row_counts": {
             "cash": len(cash_rows),
             "credit": len(credit_rows),
